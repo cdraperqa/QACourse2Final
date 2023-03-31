@@ -11,6 +11,9 @@ using System.Diagnostics;
 using FluentAssertions.Execution;
 using Xunit;
 using System.Reflection.Metadata;
+using OpenQA.Selenium.Interactions;
+using System.Xml.Linq;
+using FluentAssertions.Equivalency.Tracing;
 
 namespace QACourse2Final.Tests
 {
@@ -28,6 +31,7 @@ namespace QACourse2Final.Tests
         FacebookLoginPage _facebookLoginPage;
         FacebookUserMainPage _facebookUserMainPage;
         MultipleWindowsPage _multipleWindowsPage;
+        HoverActionsPage _hoverActionsPage;
 
         private const string _facebookUserLogin = "PantsMcpantsertonJr@outlook.com";
         private const string _facebookUserPassword = "Le@therPants1";
@@ -40,6 +44,7 @@ namespace QACourse2Final.Tests
             _datePickerPage = new DatePickerPage();
             _fileUploadPage = new FileUploadPage();
             _multipleWindowsPage = new MultipleWindowsPage();
+            _hoverActionsPage= new HoverActionsPage();
         }
 
         [Fact]
@@ -136,6 +141,92 @@ namespace QACourse2Final.Tests
             }
         }
 
+        [Fact]
+        public async Task ConfirmHover1TextShowSuccessful()
+        {
+            //arrange
+            Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
+
+            //act
+            IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject1);
+            Actions action = new Actions(Driver);
+            action.MoveToElement(hoverable).Perform();
+
+            WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
+            wait.Until(c => Driver.FindElement(_hoverActionsPage.HoverText1).Displayed);
+
+            //assert
+            using (new AssertionScope())
+            {
+                Driver.FindElement(_hoverActionsPage.HoverText1).Text.Should().Be("name: user1");
+            }
+        }
+
+        [Fact]
+        public async Task ConfirmHover2TextShowSuccessful()
+        {
+            //arrange
+            Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
+
+            //act
+            IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject2);
+            Actions action = new Actions(Driver);
+            action.MoveToElement(hoverable).Perform();
+
+            WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
+            wait.Until(c => Driver.FindElement(_hoverActionsPage.HoverText2).Displayed);
+
+            //assert
+            using (new AssertionScope())
+            {
+                Driver.FindElement(_hoverActionsPage.HoverText2).Text.Should().Be("name: user2");
+            }
+        }
+
+        [Fact]
+        public async Task ConfirmHover3TextShowSuccessful()
+        {
+            //arrange
+            Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
+
+            //act
+            IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject3);
+            Actions action = new Actions(Driver);
+            action.MoveToElement(hoverable).Perform();
+
+            WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
+            wait.Until(c => Driver.FindElement(_hoverActionsPage.HoverText3).Displayed);
+
+            //assert
+            using (new AssertionScope())
+            {
+                Driver.FindElement(_hoverActionsPage.HoverText3).Text.Should().Be("name: user3");
+            }
+        }
+
+        [Fact]
+        public async Task ConfirmHover1MoveHideTextSuccessful()
+        {
+            //arrange
+            Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
+
+            //act
+            IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject1);
+            Actions action = new Actions(Driver);
+            action.MoveToElement(hoverable).Perform();
+
+            WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
+            wait.Until(c => Driver.FindElement(_hoverActionsPage.HoverText1).Displayed);
+
+            IWebElement hoverable2 = Driver.FindElement(_hoverActionsPage.HoverObject2);
+            action.MoveToElement(hoverable2).Perform();
+
+            //assert
+            using (new AssertionScope())
+            {
+                Driver.FindElement(_hoverActionsPage.HoverText1).Displayed.Should().BeFalse();
+            }
+        }
 
         //[Fact]
         //public async Task ConfirmDatePicker()
