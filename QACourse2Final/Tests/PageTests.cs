@@ -1,5 +1,4 @@
-﻿using QACourse2Final.Tests;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,8 @@ using FluentAssertions;
 using OpenQA.Selenium.Support.UI;
 using System.Diagnostics;
 using FluentAssertions.Execution;
+using Xunit;
+using System.Reflection.Metadata;
 
 namespace QACourse2Final.Tests
 {
@@ -26,6 +27,7 @@ namespace QACourse2Final.Tests
         FileUploadPage _fileUploadPage;
         FacebookLoginPage _facebookLoginPage;
         FacebookUserMainPage _facebookUserMainPage;
+        MultipleWindowsPage _multipleWindowsPage;
 
         private const string _facebookUserLogin = "PantsMcpantsertonJr@outlook.com";
         private const string _facebookUserPassword = "Le@therPants1";
@@ -37,10 +39,11 @@ namespace QACourse2Final.Tests
             _facebookUserMainPage = new FacebookUserMainPage();
             _datePickerPage = new DatePickerPage();
             _fileUploadPage = new FileUploadPage();
+            _multipleWindowsPage = new MultipleWindowsPage();
         }
 
         [Fact]
-        public void SuccessfulLoginTest()
+        public async Task SuccessfulLoginTest()
         {
             //arrange
             Driver.Navigate().GoToUrl(_facebookLoginPage.Url);
@@ -68,7 +71,7 @@ namespace QACourse2Final.Tests
         }
 
         [Fact]
-        public void UnsuccessfulLoginTest()
+        public async Task UnsuccessfulLoginTest()
         {
             //arrange
             Driver.Navigate().GoToUrl(_facebookLoginPage.Url);
@@ -95,7 +98,7 @@ namespace QACourse2Final.Tests
         }
 
         [Fact]
-        public void ConfirmFileUpload()
+        public async Task ConfirmFileUpload()
         {
             //arrange
             Random r = new Random();
@@ -104,16 +107,52 @@ namespace QACourse2Final.Tests
 
             //act
             string uploadFile = Path.GetFullPath(Path.Combine(@"DataFile/", $"pants{rInt}.jpg"));
-            Driver.FindElement(_fileUploadPage.ChooseFile).SendKeys(uploadFile.ToString());  
+            Driver.FindElement(_fileUploadPage.ChooseFile).SendKeys(uploadFile.ToString());
             Driver.FindElement(_fileUploadPage.SubmitFile).Submit();
 
             //assert
             using (new AssertionScope())
             {
                 Driver.FindElement(_fileUploadPage.UploadedFiles).Text.Should().Be($"pants{rInt}.jpg");
-                Driver.PageSource.Contains("File Uploaded!");
+                //Driver.PageSource.Contains("File Uploaded!");
             }
         }
+
+        [Fact]
+        public async Task OpenNewWindowSuccessful()
+        {
+            //arrange
+            string newPageTitle = "New Window";
+            Driver.Navigate().GoToUrl(_multipleWindowsPage.Url);
+
+            //act
+            Driver.FindElement(_multipleWindowsPage.OpenNewPageLink).Click();
+            Driver.SwitchTo().Window(Driver.WindowHandles.Last());
+
+            //assert
+            using (new AssertionScope())
+            {
+                Driver.Title.Should().Be(newPageTitle);
+            }
+        }
+
+
+        //[Fact]
+        //public async Task ConfirmDatePicker()
+        //{
+        //    //arrange
+        //    Driver.Navigate().GoToUrl(_datePickerPage.Url);
+
+        //    //act
+        //    Driver.FindElement(_datePickerPage.DatePicker).Click();
+        //    //Driver.FindElement(_datePickerPage.DatePicker).Text(15).
+
+        //    //assert
+        //    using (new AssertionScope())
+        //    {
+        //        Thread.Sleep(1000);
+        //    }
+        //}
 
     }
 }
