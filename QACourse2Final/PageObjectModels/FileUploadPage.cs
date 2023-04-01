@@ -11,13 +11,13 @@ namespace QACourse2Final.PageObjectModels
     {
         public string Url = "https://the-internet.herokuapp.com/upload";
 
-        public string ChooseFileId = @"file-upload";
-        public By ChooseFile => By.Id(ChooseFileId);
+        string chooseFileId = @"file-upload";
+        public By ChooseFile => By.Id(chooseFileId);
 
-        public string SubmitFileId = @"file-submit";
-        public By SubmitFile => By.Id(SubmitFileId);
+        string submitFileId = @"file-submit";
+        public By SubmitFile => By.Id(submitFileId);
 
-        public string UploadedFilesId = @"uploaded-files";
-        public By UploadedFiles => By.Id(UploadedFilesId);
+        string uploadedFilesId = @"uploaded-files";
+        public By UploadedFiles => By.Id(uploadedFilesId);
     }
 }

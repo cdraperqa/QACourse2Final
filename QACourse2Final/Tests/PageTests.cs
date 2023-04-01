@@ -1,109 +1,31 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using QACourse2Final.PageObjectModels;
 using FluentAssertions;
 using OpenQA.Selenium.Support.UI;
-using System.Diagnostics;
 using FluentAssertions.Execution;
-using Xunit;
-using System.Reflection.Metadata;
 using OpenQA.Selenium.Interactions;
-using System.Xml.Linq;
-using FluentAssertions.Equivalency.Tracing;
 
 namespace QACourse2Final.Tests
 {
-    //Well, this final project been a crash and burn of epic proportions. I got stuck attempting to use sites which didn't work out and wasted all my time
-    //hitting a wall, assuming I was doing it incorrectly and not that the sites were poor choices. (Social media sites seemed like a good exmaple for file uploads
-    //but have randomly changing XPaths. I restarted this thing at least 7 times. I'm going to keep going until I finish because I want the satisfaction of
-    ///completing it, along with the knowledge gained, but I'm sure it won't be be finished before this is graded. 
-    ///It's been a great session anyway, and I am extremely grateful it was offered and that I participated. Thanks for all the great classes!
-
     public sealed class PageTests : BaseTest
     {
-        IWebDriver _driver;
         DatePickerPage _datePickerPage;
         FileUploadPage _fileUploadPage;
-        FacebookLoginPage _facebookLoginPage;
-        FacebookUserMainPage _facebookUserMainPage;
         MultipleWindowsPage _multipleWindowsPage;
         HoverActionsPage _hoverActionsPage;
 
-        private const string _facebookUserLogin = "PantsMcpantsertonJr@outlook.com";
-        private const string _facebookUserPassword = "Le@therPants1";
-        private const string _facebookBadLogin = "B@dAccount!";
-
         public PageTests()
         {
-            _facebookLoginPage = new FacebookLoginPage();
-            _facebookUserMainPage = new FacebookUserMainPage();
             _datePickerPage = new DatePickerPage();
             _fileUploadPage = new FileUploadPage();
             _multipleWindowsPage = new MultipleWindowsPage();
             _hoverActionsPage= new HoverActionsPage();
         }
 
-        [Fact]
-        public async Task SuccessfulLoginTest()
-        {
-            //arrange
-            Driver.Navigate().GoToUrl(_facebookLoginPage.Url);
-            Driver.Manage().Window.Maximize();
-
-            //act
-            WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
-            wait.Until(c => Driver.FindElement(_facebookLoginPage.UsernameInput).Displayed);
-
-            Driver.FindElement(_facebookLoginPage.UsernameInput).Clear();
-            Driver.FindElement(_facebookLoginPage.UsernameInput).SendKeys(_facebookUserLogin);
-
-            wait.Until(c => Driver.FindElement(_facebookLoginPage.PasswordInput).Displayed);
-
-            Driver.FindElement(_facebookLoginPage.PasswordInput).Clear();
-            Driver.FindElement(_facebookLoginPage.PasswordInput).SendKeys(_facebookUserPassword);
-
-            Driver.FindElement(_facebookLoginPage.LoginButton).Click();
-
-            wait.Until(c => Driver.Url.Contains("welcome"));
-
-            //assert
-            Driver.Url.ToString().Should().Be("https://www.facebook.com/?sk=welcome");
-            //https://www.facebook.com/profile.php?id=100091383433240  //after further setup, account will probably start landing on this page instead.
-        }
+        #region File Upload Tests
 
         [Fact]
-        public async Task UnsuccessfulLoginTest()
-        {
-            //arrange
-            Driver.Navigate().GoToUrl(_facebookLoginPage.Url);
-            Driver.Manage().Window.Maximize();
-
-            //act
-            WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
-            wait.Until(c => Driver.FindElement(_facebookLoginPage.UsernameInput).Displayed);
-
-            Driver.FindElement(_facebookLoginPage.UsernameInput).Clear();
-            Driver.FindElement(_facebookLoginPage.UsernameInput).SendKeys(_facebookBadLogin);
-
-            wait.Until(c => Driver.FindElement(_facebookLoginPage.PasswordInput).Displayed);
-
-            Driver.FindElement(_facebookLoginPage.PasswordInput).Clear();
-            Driver.FindElement(_facebookLoginPage.PasswordInput).SendKeys(_facebookBadLogin);
-
-            Driver.FindElement(_facebookLoginPage.LoginButton).Click();
-
-            wait.Until(c => Driver.FindElement(_facebookLoginPage.BadLoginMessage).Displayed);
-
-            //assert
-            Driver.Url.Should().Contain("www.facebook.com/login/?privacy_mutation_token");
-        }
-
-        [Fact]
-        public async Task ConfirmFileUpload()
+        public void FileUploadSuccessful()
         {
             //arrange
             Random r = new Random();
@@ -123,8 +45,11 @@ namespace QACourse2Final.Tests
             }
         }
 
+        #endregion File Upload Tests
+
+        #region Multiple Windows Tests
         [Fact]
-        public async Task OpenNewWindowSuccessful()
+        public void OpenNewWindowSuccessful()
         {
             //arrange
             string newPageTitle = "New Window";
@@ -141,8 +66,12 @@ namespace QACourse2Final.Tests
             }
         }
 
+        #endregion Multiple Windows Tests
+
+        #region Hover Tests
+
         [Fact]
-        public async Task ConfirmHover1TextShowSuccessful()
+        public void ConfirmHover1TextShowSuccessful()
         {
             //arrange
             Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
@@ -163,7 +92,7 @@ namespace QACourse2Final.Tests
         }
 
         [Fact]
-        public async Task ConfirmHover2TextShowSuccessful()
+        public void ConfirmHover2TextShowSuccessful()
         {
             //arrange
             Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
@@ -184,7 +113,7 @@ namespace QACourse2Final.Tests
         }
 
         [Fact]
-        public async Task ConfirmHover3TextShowSuccessful()
+        public void ConfirmHover3TextShowSuccessful()
         {
             //arrange
             Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
@@ -205,7 +134,7 @@ namespace QACourse2Final.Tests
         }
 
         [Fact]
-        public async Task ConfirmHover1MoveHideTextSuccessful()
+        public void ConfirmHover1MoveHideTextSuccessful()
         {
             //arrange
             Driver.Navigate().GoToUrl(_hoverActionsPage.Url);
@@ -228,22 +157,7 @@ namespace QACourse2Final.Tests
             }
         }
 
-        //[Fact]
-        //public async Task ConfirmDatePicker()
-        //{
-        //    //arrange
-        //    Driver.Navigate().GoToUrl(_datePickerPage.Url);
-
-        //    //act
-        //    Driver.FindElement(_datePickerPage.DatePicker).Click();
-        //    //Driver.FindElement(_datePickerPage.DatePicker).Text(15).
-
-        //    //assert
-        //    using (new AssertionScope())
-        //    {
-        //        Thread.Sleep(1000);
-        //    }
-        //}
+        #endregion Hover Tests
 
     }
 }
