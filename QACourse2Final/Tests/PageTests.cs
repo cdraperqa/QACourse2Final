@@ -9,26 +9,24 @@ namespace QACourse2Final.Tests
 {
     public sealed class PageTests : BaseTest
     {
-        DatePickerPage _datePickerPage;
         FileUploadPage _fileUploadPage;
         MultipleWindowsPage _multipleWindowsPage;
         HoverActionsPage _hoverActionsPage;
 
         public PageTests()
         {
-            _datePickerPage = new DatePickerPage();
             _fileUploadPage = new FileUploadPage();
             _multipleWindowsPage = new MultipleWindowsPage();
             _hoverActionsPage= new HoverActionsPage();
         }
 
         #region File Upload Tests
-
+        
         [Fact]
         public void FileUploadSuccessful()
         {
             //arrange
-            Random r = new Random();
+            Random r = new ();
             int rInt = r.Next(1, 5);
             Driver.Navigate().GoToUrl(_fileUploadPage.Url);
 
@@ -78,7 +76,7 @@ namespace QACourse2Final.Tests
 
             //act
             IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject1);
-            Actions action = new Actions(Driver);
+            Actions action = new(Driver);
             action.MoveToElement(hoverable).Perform();
 
             WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
@@ -99,7 +97,7 @@ namespace QACourse2Final.Tests
 
             //act
             IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject2);
-            Actions action = new Actions(Driver);
+            Actions action = new(Driver);
             action.MoveToElement(hoverable).Perform();
 
             WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
@@ -120,7 +118,7 @@ namespace QACourse2Final.Tests
 
             //act
             IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject3);
-            Actions action = new Actions(Driver);
+            Actions action = new(Driver);
             action.MoveToElement(hoverable).Perform();
 
             WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
@@ -141,7 +139,7 @@ namespace QACourse2Final.Tests
 
             //act
             IWebElement hoverable = Driver.FindElement(_hoverActionsPage.HoverObject1);
-            Actions action = new Actions(Driver);
+            Actions action = new(Driver);
             action.MoveToElement(hoverable).Perform();
 
             WebDriverWait wait = new(Driver, TimeSpan.FromSeconds(10));
