@@ -34,7 +34,6 @@ namespace QACourse2Final.Tests
             Driver.FindElement(_demoQAFormPage.DateOfBirthInput).Click();
             Driver.FindElement(_demoQAFormPage.CalendarNextMonth).Click();
             Driver.FindElement(_demoQAFormPage.CalendarSelectDay("001")).Click();
-            IWebElement dobEntered = Driver.FindElement(_demoQAFormPage.DateOfBirthInput);
 
             //assert
             Driver.FindElement(_demoQAFormPage.DateOfBirthInput).GetAttribute("value").Should().Be(expectedDateText);
@@ -52,7 +51,6 @@ namespace QACourse2Final.Tests
             Driver.FindElement(_demoQAFormPage.DateOfBirthInput).Click();
             Driver.FindElement(_demoQAFormPage.CalendarPreviousMonth).Click();
             Driver.FindElement(_demoQAFormPage.CalendarSelectDay("001")).Click();
-            IWebElement dobEntered = Driver.FindElement(_demoQAFormPage.DateOfBirthInput);
 
             //assert
             Driver.FindElement(_demoQAFormPage.DateOfBirthInput).GetAttribute("value").Should().Be(expectedDateText);
@@ -69,7 +67,6 @@ namespace QACourse2Final.Tests
             //act
             Driver.FindElement(_demoQAFormPage.DateOfBirthInput).Click();
             Driver.FindElement(_demoQAFormPage.CalendarSelectDay("015")).Click();
-            IWebElement dobEntered = Driver.FindElement(_demoQAFormPage.DateOfBirthInput);
 
             //assert
             Driver.FindElement(_demoQAFormPage.DateOfBirthInput).GetAttribute("value").Should().Be(expectedDateText);
